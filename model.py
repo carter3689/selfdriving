@@ -21,7 +21,7 @@ def load_data(args):
 
     data_df = pd.read_csv(os.path.join(args.data_dir,'driving_log.csv'))
 
-    X = data_df[['center', 'left','right']].values
+    X = data_df[['center', 'left','right','throttle','brake','speed']].values
 
     y = data_df['steering'].values
 
@@ -112,13 +112,17 @@ def main():
     parser.add_argument('-d', help='data directory', dest='data_dir', type=str, default='data')
     parser.add_argument('-t', help='test size fraction', dest='test_size', type=float, default=0.2)
     parser.add_argument('-k', help='drop out probability', dest='keep_prob', type=float, default=0.5)
-    parser.add_argument('-n', help='number of epochs', dest='nb_epoch', type=int, default=10)
-    parser.add_argument('-s', help='samples per epoch', dest='samples_per_epoch', type=int, default=20000)
+    parser.add_argument('-n', help='number of epochs', dest='nb_epoch', type=int, default=5)
+    parser.add_argument('-s', help='samples per epoch', dest='samples_per_epoch', type=int, default=30000)
     parser.add_argument('-b', help='batch size', dest='batch_size', type=int, default=40)
     parser.add_argument('-o', help='save best models only', dest='save_best_only', type=s2b, default='true')
     parser.add_argument('-l', help='learning rate', dest='learning_rate', type=float, default=1.0e-4)
     args = parser.parse_args()
 
+    ''' 
+    Printing the summary of the params that will be used during training.
+    This is being used to check at a glance what was used before if changes are needed.
+    '''
     print('-' * 30)
     print('Parameters')
     print('-' * 30)

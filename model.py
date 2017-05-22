@@ -5,7 +5,7 @@ from keras.models import Sequential
 from keras.optimizers import Adam
 from keras.callbacks import ModelCheckpoint
 from keras.layers import Lambda ,Conv2D, MaxPooling2D,Dropout,Dense,Flatten
-from utils import INPUT_SHAPE,batch_generator
+from utils import INPUT_SHAPE,batch_generator # Helper module that contains seperate helper functions that will be used in parts of the project
 import argparse
 import os
 
@@ -15,13 +15,15 @@ np.random.seed(0)
 def load_data(args):
     """
     Load training data and split it into training and validation set
+    
+    return X_train,X_valid,y_train,y_valid
     """
 
     #read CSV file into a single dataframe variable
 
     data_df = pd.read_csv(os.path.join(args.data_dir,'driving_log.csv'))
 
-    X = data_df[['center', 'left','right','throttle','brake','speed']].values
+    X = data_df[['center', 'left','right']].values
 
     y = data_df['steering'].values
 
@@ -49,6 +51,8 @@ def build_model(args):
     the fully connected layer for predicting the steering angle.
     dropout avoids overfitting
     ELU(Exponential linear unit) function takes care of the Vanishing gradient problem.
+    
+    Return model
     '''
 
     model = Sequential()
@@ -95,7 +99,7 @@ def s2b(s):
     '''
             Converts a string to boolean value
             :param s:
-            :return:
+            :return: s == 'true' or s == 'yes' or s == 'y' or s == '1'
             '''
 
     s = s.lower()
